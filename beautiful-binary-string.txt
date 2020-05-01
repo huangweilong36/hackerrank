@@ -6,8 +6,20 @@ using namespace std;
 
 // Complete the beautifulBinaryString function below.
 int beautifulBinaryString(string b) {
-
-
+	
+	int output = 0;
+	
+	// CHECK HOW MANY TIMES "010" APPEARS
+	std::size_t found = b.find("010");
+	while (found != std::string::npos) {
+		cout << "Found at " << found << "\n";
+		output++;
+		found = b.find("010", found+3);
+	}
+	
+	// FUNCTION OUTPUT
+	return output;
+	
 }
 
 int main()
