@@ -6,8 +6,26 @@ using namespace std;
 
 // Complete the theLoveLetterMystery function below.
 int theLoveLetterMystery(string s) {
-
-
+	
+	int i_left = 0;
+	int i_right = s.size() - 1;
+	int noOfOperations = 0;
+	
+	// COMPARE LEFT-SIDE CHARACTER WITH RIGHT-SIDE CHARACTER
+	while (i_left < i_right) {
+		
+		// IF LEFT IS NOT EQUAL RIGHT
+		if (s[i_left] != s[i_right]) {
+			noOfOperations = noOfOperations + abs(int(s[i_left]) - int(s[i_right]));
+		}
+		
+		i_left++;
+		i_right--;
+	}
+	
+	// FUNCTION OUTPUT
+	return noOfOperations;
+	
 }
 
 int main()
