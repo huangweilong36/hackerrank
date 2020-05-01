@@ -7,7 +7,7 @@ using namespace std;
 // Complete the beautifulBinaryString function below.
 int beautifulBinaryString(string b) {
 
-
+dsjhcdvjhcdcfd
 }
 
 int main()
