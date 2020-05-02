@@ -6,8 +6,38 @@ using namespace std;
 
 // Complete the anagram function below.
 int anagram(string s) {
-
-
+	
+	int output;
+	
+	// IF STRING LENGTH IS NOT EVEN, THEN IT CANNOT 
+	// BE SPLIT INTO EVEN LENGTHS. NO SOLUTION IS 
+	// POSSIBLE.
+	if ((s.size() % 2) != 0) {
+		output = -1;
+	} else {
+		
+		// SPLIT INTO EQUAL SUBSTRINGS
+		string s_left = s.substr(0, s.size()/2);
+		string s_right = s.substr(s.size()/2, s.size()/2);
+		
+		// SORT SUBSTRINGS
+		sort(s_left.begin(), s_left.end());
+		sort(s_right.begin(), s_right.end());
+		
+		// COMPARE SORTED SUBSTRINGS AND FIND THE
+		// NUMBER OF CHARACTER DIFFERENCES
+		output = 0;
+		for (int i = 0; i < s.size()/2; i++) {
+			if (s_left[i] != s_right[i]) {
+				output++;
+			}
+		}
+		
+	}
+	
+	// FUNCTION OUTPUT
+	return output;
+	
 }
 
 int main()
