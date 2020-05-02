@@ -4,81 +4,78 @@
 
 using namespace std;
 
-bool isPalindrome(string strInput, int i_start, int i_end) {
+bool isPalindrome(string strInput) {
 	
-	// RECURSIVE FUNCTION TO CHECK IF THE INPUT STRING IS 
-	// A PALINDROME.
+	// CANNOT USE RECURSIVE FUNCTION AS THE PROGRAM WILL RUN
+	// OUT OF MEMORY
 	
-	if (i_start >= i_end) {
-		return true;
-	} else {
-		
-		if (strInput[i_start] == strInput[i_end]) {
-			return isPalindrome(strInput, i_start+1, i_end-1);
-		} else {
-			return false;
+	bool output = true;
+	int i_len = strInput.size() - 1;
+	int i_max = strInput.size() / 2;
+	int i = 0;
+	
+	while (output && i <= i_max) {
+		if (strInput[i] != strInput[i_len - i]) {
+			output = false;
 		}
-		
+		i++;
 	}
+	
+	return output;
 	
 }
 
-int findMisMatch(string strInput, int i_start, int i_end) {
+int findMisMatch(string strInput) {
 	
-	// FIND THE FIRST CHARACTER PALINDROME MIS-MATCH FROM THE
-	// LEFT.
+	// CANNOT USE RECURSIVE FUNCTION AS THE PROGRAM WILL RUN
+	// OUT OF MEMORY
 	
-	if (strInput[i_start] == strInput[i_end]) {
-		return findMisMatch(strInput, i_start+1, i_end-1);
-	} else {
-		return i_start;
+	bool found = false;
+	int output;
+	int i_len = strInput.size() - 1;
+	int i_max = strInput.size() / 2;
+	int i = 0;
+	
+	while (!found && i <= i_max) {
+		if (strInput[i] != strInput[i_len - i]) {
+			found = true;
+			output = i;
+		}
+		i++;
 	}
 	
-}
-
-string removeChar(string strInput, int i) {
-	
-	// REMOVE A CHARACTER FROM THE INPUT STRING.
-	
-	string leftString = "";
-	string rightString = "";
-	
-	if (i == 0) {
-		rightString = strInput.substr(i+1, strInput.size()-1);
-	} else if (i == (strInput.size()-1)) {
-		leftString = strInput.substr(0, strInput.size()-1);
-	} else {
-		leftString = strInput.substr(0, i);
-		rightString = strInput.substr(i+1, strInput.size()-1-i);
-	}
-	
-	return leftString + rightString;
+	return output;
 	
 }
 
 // Complete the palindromeIndex function below.
 int palindromeIndex(string s) {
 	
-	// cout << "Current string: " << s << "\n";
+	//cout << "Current string: " << s << "\n";
 	
 	int s_last_i = s.size() - 1;
 	int output;
 	
-	if (isPalindrome(s,0,s_last_i)) {
-		// cout << "Already a palindrome.\n";
+	if (isPalindrome(s)) {
+		//cout << "Already a palindrome.\n";
 		output = -1;
 	} else {
 		
-		int i_left_err = findMisMatch(s, 0, s_last_i);
+		int i_left_err = findMisMatch(s);
 		int i_right_err = s_last_i - i_left_err;
-		// cout << "Mis-match at " << i_left_err << " and " << i_right_err << ".\n";
+		string s_try1 = s;
+		string s_try2 = s;
+		s_try1.erase(i_left_err, 1);
+		s_try2.erase(i_right_err, 1);
 		
-		if (isPalindrome(removeChar(s, i_left_err), 0, s_last_i-1)) {
+		//cout << "Mis-match at " << i_left_err << " and " << i_right_err << ".\n";
+		
+		if (isPalindrome(s_try1)) {
 			output = i_left_err;
-		} else if (isPalindrome(removeChar(s, i_right_err), 0, s_last_i-1)) {
+		} else if (isPalindrome(s_try2)) {
 			output = i_right_err;		
 		} else {
-			// cout << "Not possible.\n";
+			//cout << "Not possible.\n";
 			output = -1;
 		}
 		
