@@ -7,7 +7,35 @@ using namespace std;
 // Complete the gameOfThrones function below.
 string gameOfThrones(string s) {
 
-
+	string s_sorted = s;
+	sort(s_sorted.begin(), s_sorted.end());
+	
+	char currChar = ' ';
+	int countCurrChar = 0;
+	int countOdd = 0;
+	for (int i = 0; i < s_sorted.size(); i++) {
+		if (currChar != s_sorted[i]) {
+			
+			if ((countCurrChar % 2) == 1) {
+				countOdd++;
+			}
+			
+			currChar = s_sorted[i];
+			countCurrChar = 1;
+			
+		} else {
+			
+			countCurrChar++;
+			
+		}
+	}
+	
+	if (countOdd <= 1) {
+		return "YES";
+	} else {
+		return "NO";	
+	}
+	
 }
 
 int main()
