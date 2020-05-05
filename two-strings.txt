@@ -7,7 +7,34 @@ using namespace std;
 // Complete the twoStrings function below.
 string twoStrings(string s1, string s2) {
 
-
+	string unique_s1 = s1;
+	string unique_s2 = s2;
+	sort(unique_s1.begin(), unique_s1.end());
+	sort(unique_s2.begin(), unique_s2.end());
+	string::iterator it = unique(unique_s1.begin(), unique_s1.end());
+	unique_s1.resize(distance(unique_s1.begin(), it));
+	it = unique(unique_s2.begin(), unique_s2.end());
+	unique_s2.resize(distance(unique_s2.begin(), it));
+	
+	bool found = false;
+	int i = 0;
+	while (!found && i < unique_s1.size()) {
+		int j = 0;
+		while (!found && j < unique_s2.size()) {
+			if (unique_s1[i] == unique_s2[j]) {
+				found = true;
+			}
+			j++;
+		}
+		i++;
+	}
+	
+	if (found) {
+		return "YES";
+	} else {
+		return "NO";
+	}
+	
 }
 
 int main()
