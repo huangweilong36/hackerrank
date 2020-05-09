@@ -7,12 +7,15 @@ using namespace std;
 // Complete the isValid function below.
 string isValid(string s) {
 	
+	// SORT THE INPUT STRING
 	sort(s.begin(), s.end());
 	
+	// MAKE THE INPUT STRING UNIQUE
 	string s_unique = s;
 	string::iterator it = unique(s_unique.begin(), s_unique.end());
 	s_unique.resize(distance(s_unique.begin(), it));
 	
+	// COUNT THE NUMBER OF INSTANCES OF EACH CHARACTER
 	vector<int> charCounts;
 	for (int i = 0; i < s_unique.size(); i++) {
 		int currCount = 0;
@@ -22,7 +25,6 @@ string isValid(string s) {
 			}
 		}
 		charCounts.push_back(currCount);
-		cout << currCount << endl;
 	}
 	
 	vector<int> uniqueCharCounts = charCounts; 
@@ -38,22 +40,24 @@ string isValid(string s) {
 		result = "YES";
 	} else {
 		
-		vector<int> countOfCounts;
-		for (int i = 0; i < uniqueCharCounts.size(); i++) {
-			int currCount = 0;
-			for (int j = 0; j < charCounts.size(); j++) {
-				if (uniqueCharCounts[i] == charCounts[j]) {
-					currCount++;
-				}
+		
+		sort(charCounts.begin(), charCounts.end());
+		int refCount = charCounts[0];
+		int totalDiff = 0;
+		int maxDiff = 0;
+		for (int i = 1; i < charCounts.size(); i++) {
+			if (charCounts[i] != refCount) {
+				totalDiff++;
 			}
-			countOfCounts.push_back(currCount);
+			if (abs(charCounts[i] - refCount) > maxDiff) {
+				maxDiff = abs(charCounts[i] - refCount);
+			}
 		}
 		
-		result = "NO";
-		for (int i = 0; i < countOfCounts.size(); i++) {
-			if (countOfCounts[i] == 1) {
-				result = "YES";
-			}
+		if (maxDiff <= 1 && ((totalDiff == 1) || (totalDiff == (charCounts.size()-1)))) {
+			result = "YES";
+		} else {
+			result = "NO";
 		}
 		
 	}
