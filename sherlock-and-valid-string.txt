@@ -6,7 +6,59 @@ using namespace std;
 
 // Complete the isValid function below.
 string isValid(string s) {
+	
+	sort(s.begin(), s.end());
+	
+	string s_unique = s;
+	string::iterator it = unique(s_unique.begin(), s_unique.end());
+	s_unique.resize(distance(s_unique.begin(), it));
+	
+	vector<int> charCounts;
+	for (int i = 0; i < s_unique.size(); i++) {
+		int currCount = 0;
+		for (int j = 0; j < s.size(); j++) {
+			if (s_unique[i] == s[j]) {
+				currCount++;
+			}
+		}
+		charCounts.push_back(currCount);
+		cout << currCount << endl;
+	}
+	
+	vector<int> uniqueCharCounts = charCounts; 
+	sort(uniqueCharCounts.begin(), uniqueCharCounts.end());
+	vector<int>::iterator it1 = unique(uniqueCharCounts.begin(), uniqueCharCounts.end());
+	uniqueCharCounts.resize(distance(uniqueCharCounts.begin(), it1));
+	
 
+	string result;
+	if (uniqueCharCounts.size() > 2) {
+		result = "NO";
+	} else if (uniqueCharCounts.size() == 1) {
+		result = "YES";
+	} else {
+		
+		vector<int> countOfCounts;
+		for (int i = 0; i < uniqueCharCounts.size(); i++) {
+			int currCount = 0;
+			for (int j = 0; j < charCounts.size(); j++) {
+				if (uniqueCharCounts[i] == charCounts[j]) {
+					currCount++;
+				}
+			}
+			countOfCounts.push_back(currCount);
+		}
+		
+		result = "NO";
+		for (int i = 0; i < countOfCounts.size(); i++) {
+			if (countOfCounts[i] == 1) {
+				result = "YES";
+			}
+		}
+		
+	}
+			
+	return result;
 
 }
 
