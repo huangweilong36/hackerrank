@@ -6,8 +6,36 @@ using namespace std;
 
 // Complete the stringConstruction function below.
 int stringConstruction(string s) {
+	
+	int p0 = 0;
+	int p1 = 0;
+	int p2 = s.size() - 1;
+	int cost = 0;
+	
+	int iteration = 0;
+	
+	while (p1 <= p2) {
+		
+		string p = s.substr(0, p1);
+		//cout << "Start of iteration / Copied string: " << p << endl;
+		//cout << "Start of iteration / Remaining string: " << s.substr(p1) << endl;
+		
+		if (string::npos == p.find(s[p1])) {
+			cost++;
+		}
 
-
+		//cout << "Cost: " << cost << endl;
+		
+		p1++;
+		
+		//p = s.substr(0, p1);
+		//cout << "End of iteration / Copied string: " << p << endl;
+		//cout << "End of iteration / Remaining string: " << s.substr(p1) << endl;
+		
+	}
+	
+	return cost;
+	
 }
 
 int main()
