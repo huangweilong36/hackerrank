@@ -9,14 +9,17 @@ string isValid(string s) {
 	
 	// SORT THE INPUT STRING
 	sort(s.begin(), s.end());
+	cout << "Sorted string: " << s << endl;
 	
 	// MAKE THE INPUT STRING UNIQUE
 	string s_unique = s;
 	string::iterator it = unique(s_unique.begin(), s_unique.end());
 	s_unique.resize(distance(s_unique.begin(), it));
+	cout << "Unique string: " << s_unique << endl;
 	
 	// COUNT THE NUMBER OF INSTANCES OF EACH CHARACTER
 	vector<int> charCounts;
+	cout << "Unique character count: ";
 	for (int i = 0; i < s_unique.size(); i++) {
 		int currCount = 0;
 		for (int j = 0; j < s.size(); j++) {
@@ -25,43 +28,49 @@ string isValid(string s) {
 			}
 		}
 		charCounts.push_back(currCount);
+		cout << currCount << " / ";
 	}
+	cout << endl;
 	
+	// SORT THE COUNTS OF INSTANCES OF EACH CHARACTER
+	sort(charCounts.begin(), charCounts.end());
+	
+	// MAKE THE COUNTS OF INSTANCES OF EACH CHARACTER UNIQUE
 	vector<int> uniqueCharCounts = charCounts; 
 	sort(uniqueCharCounts.begin(), uniqueCharCounts.end());
 	vector<int>::iterator it1 = unique(uniqueCharCounts.begin(), uniqueCharCounts.end());
 	uniqueCharCounts.resize(distance(uniqueCharCounts.begin(), it1));
 	
-
 	string result;
-	if (uniqueCharCounts.size() > 2) {
-		result = "NO";
-	} else if (uniqueCharCounts.size() == 1) {
+	if (uniqueCharCounts.size() == 1) {
+		// IF THERE IS ONLY ONE UNIQUE COUNT, THIS MEANS ALL CHARACTER HAVE THE SAME COUNT.
+		// THUS, THE INPUT STRING IS VALID.
 		result = "YES";
+	} else if (uniqueCharCounts.size() > 2) {
+		// IF THERE ARE MORE THAN 2 UNIQUE COUNTS, THE INPUIT STRING CANNOT POSSIBLE BE
+		// VALID BECAUSE WE CAN ONLY REMOVE 1 CHARACTER.
+		result = "NO";
 	} else {
 		
-		
-		sort(charCounts.begin(), charCounts.end());
-		int refCount = charCounts[0];
-		int totalDiff = 0;
-		int maxDiff = 0;
-		for (int i = 1; i < charCounts.size(); i++) {
-			if (charCounts[i] != refCount) {
-				totalDiff++;
-			}
-			if (abs(charCounts[i] - refCount) > maxDiff) {
-				maxDiff = abs(charCounts[i] - refCount);
+		int minCount = *min_element(charCounts.begin(), charCounts.end());
+		int countZeros = 0;
+		int countOnes = 0;
+		for (int i = 0; i < charCounts.size(); i++)  {
+			charCounts[i] -= minCount;
+			if (charCounts[i] == 0) {
+				countZeros++;
+			} else if (charCounts[i] == 1) {
+				countOnes++;
 			}
 		}
-		
-		if (maxDiff <= 1 && ((totalDiff == 1) || (totalDiff == (charCounts.size()-1)))) {
+		if (countZeros == 1 || countOnes == 1) {
 			result = "YES";
 		} else {
 			result = "NO";
 		}
 		
 	}
-			
+	
 	return result;
 
 }
