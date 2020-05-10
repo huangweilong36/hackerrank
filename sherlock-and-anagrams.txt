@@ -6,8 +6,43 @@ using namespace std;
 
 // Complete the sherlockAndAnagrams function below.
 int sherlockAndAnagrams(string s) {
-
-
+	
+	int result = 0;
+	int subLen = 1;
+	while (subLen < s.size()) {
+		
+		//cout << "Current sub-string length: " << subLen << endl;
+		
+		int i = 0;
+		while (i < (s.size() - subLen + 1)) {
+			
+			string s1 = s.substr(i, subLen);
+			//cout << "s1: " << s1 << endl;
+			sort(s1.begin(), s1.end());
+			
+			int j = i + 1;
+			while (j < (s.size() - subLen + 1)) {
+				
+				string s2 = s.substr(j, subLen);
+				//cout << "s2: " << s2 << endl;
+				sort(s2.begin(), s2.end());
+				
+				if (s1 == s2) {
+					//cout << "Found." << endl;
+					result++;
+				}
+				
+				j++;
+			}
+			
+			i++;
+		}
+		
+		subLen++;
+	}
+	
+	return result;
+	
 }
 
 int main()
