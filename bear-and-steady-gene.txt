@@ -6,8 +6,73 @@ using namespace std;
 
 // Complete the steadyGene function below.
 int steadyGene(string gene) {
-
-
+	
+	int countIdeal = gene.size() / 4;
+	int countA = count(gene.begin(), gene.end(), 'A');
+	int countC = count(gene.begin(), gene.end(), 'C');
+	int countT = count(gene.begin(), gene.end(), 'T');
+	int countG = count(gene.begin(), gene.end(), 'G');
+	
+	int addA = countIdeal - countA;
+	int addC = countIdeal - countC;
+	int addT = countIdeal - countT;
+	int addG = countIdeal - countG;
+	
+	int minLength = 0;
+	if (addA > 0) {
+		minLength += addA;
+	}
+	if (addC > 0) {
+		minLength += addC;
+	}
+	if (addT > 0) {
+		minLength += addT;
+	}
+	if (addG > 0) {
+		minLength += addG;
+	}
+	
+	if (minLength != 0) { 
+	
+		bool found = false;
+		while (!found && minLength <= gene.length()) {
+			
+			int i = 0;
+			while (!found && i < (gene.length() - minLength)) {
+				
+				found = true;
+				if (addA < 0) {
+					if (count(gene.begin() + i, gene.begin() + i + minLength, 'A') < abs(addA)) {
+						found = false;
+					}
+				}
+				if (addC < 0) {
+					if (count(gene.begin() + i, gene.begin() + i + minLength, 'C') < abs(addC)) {
+						found = false;
+					}
+				}
+				if (addT < 0) {
+					if (count(gene.begin() + i, gene.begin() + i + minLength, 'T') < abs(addT)) {
+						found = false;
+					}
+				}
+				if (addG < 0) {
+					if (count(gene.begin() + i, gene.begin() + i + minLength, 'G') < abs(addG)) {
+						found = false;
+					}
+				}
+				
+				i++;
+			}
+			
+			if (!found) {
+				minLength++;
+			}
+		}
+	
+	}
+	
+	return minLength;
 }
 
 int main()
