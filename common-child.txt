@@ -7,7 +7,31 @@ using namespace std;
 // Complete the commonChild function below.
 int commonChild(string s1, string s2) {
 	
+	// TUTORIAL:
+	// https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 
+	// INITIALIZE
+	vector<vector<int>> lengths;
+	for (int i = 0; i < (s1.size()+1); i++) {
+		vector<int> temp;
+		for (int j = 0; j < (s2.size()+1); j++) {
+			temp.push_back(0);
+		}
+		lengths.push_back(temp);
+	}
+	
+	// CALCULATE
+	for (int i = 1; i < (s1.size()+1); i++) {
+		for (int j = 1; j < (s2.size()+1); j++) {
+			if (s1[i-1] == s2[j-1]) {
+				lengths[i][j] = lengths[i-1][j-1] + 1;
+			} else {
+				lengths[i][j] = max(lengths[i][j-1], lengths[i-1][j]);
+			}
+		}
+	}
+	
+	return lengths[s1.size()][s2.size()];
 
 }
 
