@@ -7,57 +7,82 @@ using namespace std;
 // Complete the steadyGene function below.
 int steadyGene(string gene) {
 	
+	// COUNT EACH CHARACTER IN THE ENTIRE GENE.
 	int countIdeal = gene.size() / 4;
 	int countA = count(gene.begin(), gene.end(), 'A');
 	int countC = count(gene.begin(), gene.end(), 'C');
 	int countT = count(gene.begin(), gene.end(), 'T');
 	int countG = count(gene.begin(), gene.end(), 'G');
 	
+	// COUNT THE NUMBER OF ADDITION OF EACH CHARACTER TO MAKE THE GENE IDEAL.
+	// A NEGATIVE VALUE SIGNIFIES THE NUMBER OF CHARACTERS TO BE REMOVED.
 	int addA = countIdeal - countA;
 	int addC = countIdeal - countC;
 	int addT = countIdeal - countT;
 	int addG = countIdeal - countG;
 	
-	int minLength = 0;
-	if (addA > 0) {
-		minLength += addA;
-	}
-	if (addC > 0) {
-		minLength += addC;
-	}
-	if (addT > 0) {
-		minLength += addT;
-	}
-	if (addG > 0) {
-		minLength += addG;
-	}
+	// CALCULATE THE MINIMUM LENGTH OF THE STRING TO BE REPLACED.
+	int minLength = ((addA > 0) ? addA : 0) +
+					((addC > 0) ? addC : 0) +
+					((addT > 0) ? addT : 0) +
+					((addG > 0) ? addG : 0);
 	
+	// IF THE GENE IS ALREADY IDEAL, EXIT THE FUNCTION.
+	// OTHERWISE, PERFORM THE FOLLOWING CHECKS.
 	if (minLength != 0) { 
-	
+		
 		bool found = false;
 		while (!found && minLength <= gene.length()) {
-			
+				
 			int i = 0;
+			int j = i + minLength - 1;
+			int tempCountA = count(gene.begin() + i, gene.begin() + j + 1, 'A');
+			int tempCountC = count(gene.begin() + i, gene.begin() + j + 1, 'C');
+			int tempCountT = count(gene.begin() + i, gene.begin() + j + 1, 'T');
+			int tempCountG = count(gene.begin() + i, gene.begin() + j + 1, 'G');
+			
+			i = 1;
+			
 			while (!found && i < (gene.length() - minLength)) {
 				
+				j = i + minLength - 1;
+				if (gene[i-1] == 'A') {
+					tempCountA--;
+				} else if (gene[i-1] == 'C') {
+					tempCountC--;
+				} else if (gene[i-1] == 'T') {
+					tempCountT--;
+				} else if (gene[i-1] == 'G') {
+					tempCountG--;
+				}
+				if (gene[j] == 'A') {
+					tempCountA++;
+				} else if (gene[j] == 'C') {
+					tempCountC++;
+				} else if (gene[j] == 'T') {
+					tempCountT++;
+				} else if (gene[j] == 'G') {
+					tempCountG++;
+				}
+				
 				found = true;
-				if (addA < 0) {
-					if (count(gene.begin() + i, gene.begin() + i + minLength, 'A') < abs(addA)) {
+				if (found && addA < 0) {
+					if (tempCountA < abs(addA)) {
 						found = false;
 					}
 				}
-				if (addC < 0) {
-					if (count(gene.begin() + i, gene.begin() + i + minLength, 'C') < abs(addC)) {
+				if (found && addC < 0) {
+					if (tempCountC < abs(addC)) {
 						found = false;
 					}
 				}
-				if (addT < 0) {
-					if (count(gene.begin() + i, gene.begin() + i + minLength, 'T') < abs(addT)) {
+				if (found && addT < 0) {
+					if (tempCountT < abs(addT)) {
 						found = false;
 					}
 				}
-				if (addG < 0) {
-					if (count(gene.begin() + i, gene.begin() + i + minLength, 'G') < abs(addG)) {
+				if (found && addG < 0) {
+					if (tempCountG < abs(addG)) {
 						found = false;
 					}
 				}
