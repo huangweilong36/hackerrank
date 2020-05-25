@@ -31,16 +31,34 @@ int steadyGene(string gene) {
 	// OTHERWISE, PERFORM THE FOLLOWING CHECKS.
 	if (minLength != 0) { 
 		
+		// COUNT EACH CHARACTER IN THE LEFT-MOST "MINIMUM LENGTH - 1" OF GENE
+		int i;
+		int j = minLength - 2;
+		int intitalTempCountA = count(gene.begin(), gene.begin() + j + 1, 'A');
+		int intitalTempCountC = count(gene.begin(), gene.begin() + j + 1, 'C');
+		int intitalTempCountT = count(gene.begin(), gene.begin() + j + 1, 'T');
+		int intitalTempCountG = count(gene.begin(), gene.begin() + j + 1, 'G');
 		bool found = false;
+		
+		// KEEP INCREASING MINIMUM LENGTH UNTIL SOLUTION IS FOUND
 		while (!found && minLength <= gene.length()) {
-				
-			int i = 0;
-			int j = i + minLength - 1;
-			int tempCountA = count(gene.begin() + i, gene.begin() + j + 1, 'A');
-			int tempCountC = count(gene.begin() + i, gene.begin() + j + 1, 'C');
-			int tempCountT = count(gene.begin() + i, gene.begin() + j + 1, 'T');
-			int tempCountG = count(gene.begin() + i, gene.begin() + j + 1, 'G');
 			
+			// ADD THE CHARACTER COUNT AFTER INCREASING MINIMUM LENGTH
+			j = minLength - 1;
+			if (gene[j] == 'A') {
+				intitalTempCountA++;
+			} else if (gene[j] == 'C') {
+				intitalTempCountC++;
+			} else if (gene[j] == 'T') {
+				intitalTempCountT++;
+			} else if (gene[j] == 'G') {
+				intitalTempCountG++;
+			}
+			
+			int tempCountA = intitalTempCountA;
+			int tempCountC = intitalTempCountC;
+			int tempCountT = intitalTempCountT;
+			int tempCountG = intitalTempCountG;
 			i = 1;
 			
 			while (!found && i < (gene.length() - minLength)) {
