@@ -20,6 +20,10 @@ int steadyGene(string gene) {
 	int addC = countIdeal - countC;
 	int addT = countIdeal - countT;
 	int addG = countIdeal - countG;
+	int removeA = countA - countIdeal;
+	int removeC = countC - countIdeal;
+	int removeT = countT - countIdeal;
+	int removeG = countG - countIdeal;
 	
 	// CALCULATE THE MINIMUM LENGTH OF THE STRING TO BE REPLACED.
 	int minLength = ((addA > 0) ? addA : 0) +
@@ -27,95 +31,97 @@ int steadyGene(string gene) {
 					((addT > 0) ? addT : 0) +
 					((addG > 0) ? addG : 0);
 	
+	int output = gene.length();
+	
 	// IF THE GENE IS ALREADY IDEAL, EXIT THE FUNCTION.
 	// OTHERWISE, PERFORM THE FOLLOWING CHECKS.
 	if (minLength != 0) { 
 		
-		// COUNT EACH CHARACTER IN THE LEFT-MOST "MINIMUM LENGTH - 1" OF GENE
-		int i;
-		int j = minLength - 2;
-		int intitalTempCountA = count(gene.begin(), gene.begin() + j + 1, 'A');
-		int intitalTempCountC = count(gene.begin(), gene.begin() + j + 1, 'C');
-		int intitalTempCountT = count(gene.begin(), gene.begin() + j + 1, 'T');
-		int intitalTempCountG = count(gene.begin(), gene.begin() + j + 1, 'G');
-		bool found = false;
+		int i = 0;
+		int j = 0;
 		
-		// KEEP INCREASING MINIMUM LENGTH UNTIL SOLUTION IS FOUND
-		while (!found && minLength <= gene.length()) {
+		int tempCountA = 0;
+		int tempCountC = 0;
+		int tempCountT = 0;
+		int tempCountG = 0;
+		char addedRightChar = gene[0];
+		char removedLeftChar;
+		
+		// INITIALIZE
+		if (addedRightChar == 'A') {
+			tempCountA++;
+		} else if (addedRightChar == 'C') {
+			tempCountC++;
+		} else if (addedRightChar == 'T') {
+			tempCountT++;
+		} else if (addedRightChar == 'G') {
+			tempCountG++;
+		}
+
+		while (j < gene.length()) {
 			
-			// ADD THE CHARACTER COUNT AFTER INCREASING MINIMUM LENGTH
-			j = minLength - 1;
-			if (gene[j] == 'A') {
-				intitalTempCountA++;
-			} else if (gene[j] == 'C') {
-				intitalTempCountC++;
-			} else if (gene[j] == 'T') {
-				intitalTempCountT++;
-			} else if (gene[j] == 'G') {
-				intitalTempCountG++;
-			}
+			/*
+			// DEBUG
+			cout << "Current solution: " << i << ", " << j << ". Current counts: " << 
+						tempCountA << ", " << 
+						tempCountC << ", " <<		
+						tempCountT << ", " <<
+						tempCountG << endl;
+			*/
 			
-			int tempCountA = intitalTempCountA;
-			int tempCountC = intitalTempCountC;
-			int tempCountT = intitalTempCountT;
-			int tempCountG = intitalTempCountG;
-			i = 1;
-			
-			while (!found && i < (gene.length() - minLength)) {
+			// IF A VALID SOLUTION IS FOUND, ...
+			if (removeA <= tempCountA && 
+						removeC <= tempCountC && 
+						removeT <= tempCountT && 
+						removeG <= tempCountG) {
 				
-				j = i + minLength - 1;
-				if (gene[i-1] == 'A') {
+				cout << "Valid Solution: " << i << ", " << j << endl;
+				
+				// REMEMBER THE BEST SOLUTION
+				if (output > (j - i + 1)) {
+					output = (j - i + 1);
+				}
+				
+				// TRY TO FIND A SHORTER SOLUTION BY REMOVING THE LEFT-MOST CHARACTER
+				i++;
+				removedLeftChar = gene[i-1];
+				if (removedLeftChar == 'A') {
 					tempCountA--;
-				} else if (gene[i-1] == 'C') {
+				} else if (removedLeftChar == 'C') {
 					tempCountC--;
-				} else if (gene[i-1] == 'T') {
+				} else if (removedLeftChar == 'T') {
 					tempCountT--;
-				} else if (gene[i-1] == 'G') {
+				} else if (removedLeftChar == 'G') {
 					tempCountG--;
 				}
-				if (gene[j] == 'A') {
+				
+			} else {
+				
+				// TRY TO FIND A LONGER SOLUTION BUT VALID BY ADDING THE RIGHT-MOST CHARACTER
+				j++;
+				addedRightChar = gene[j];
+				if (addedRightChar == 'A') {
 					tempCountA++;
-				} else if (gene[j] == 'C') {
+				} else if (addedRightChar == 'C') {
 					tempCountC++;
-				} else if (gene[j] == 'T') {
+				} else if (addedRightChar == 'T') {
 					tempCountT++;
-				} else if (gene[j] == 'G') {
+				} else if (addedRightChar == 'G') {
 					tempCountG++;
 				}
 				
-				found = true;
-				if (found && addA < 0) {
-					if (tempCountA < abs(addA)) {
-						found = false;
-					}
-				}
-				if (found && addC < 0) {
-					if (tempCountC < abs(addC)) {
-						found = false;
-					}
-				}
-				if (found && addT < 0) {
-					if (tempCountT < abs(addT)) {
-						found = false;
-					}
-				}
-				if (found && addG < 0) {
-					if (tempCountG < abs(addG)) {
-						found = false;
-					}
-				}
-				
-				i++;
 			}
 			
-			if (!found) {
-				minLength++;
-			}
+		
 		}
-	
+		
 	}
 	
-	return minLength;
+	if (minLength == 0) {
+		return 0;
+	} else { 
+		return output;
+	}
 }
 
 int main()
